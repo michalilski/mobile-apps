@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">z2-kotlin</string>
+    <string name="title">Rock, paper, scissors!</string>
+    <string name="rock">Rock</string>
+    <string name="paper">Paper</string>
+    <string name="scissors">Scissors</string>
+    <string name="enemy_score">Enemy Score</string>
+    <string name="player_score">PlayerScore</string>
+</resources>
