@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Hangman</string>
+    <string-array name="words">
+        <item>flower</item>
+        <item>egg</item>
+        <item>marry</item>
+        <item>lazy</item>
+        <item>pizza</item>
+        <item>deer</item>
+        <item>fearless</item>
+        <item>invincible</item>
+        <item>mailbox</item>
+        <item>dragon</item>
+        <item>material</item>
+        <item>melodic</item>
+        <item>discreet</item>
+        <item>flight</item>
+        <item>turkey</item>
+        <item>library</item>
+    </string-array>
+</resources>
