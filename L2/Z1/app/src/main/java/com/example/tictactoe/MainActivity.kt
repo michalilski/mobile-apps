@@ -3,7 +3,6 @@ package com.example.tictactoe
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 
 class MainActivity : AppCompatActivity() {
@@ -14,11 +13,13 @@ class MainActivity : AppCompatActivity() {
 
     fun chooseSmallGame(v: View) {
         val intent = Intent(this, SmallGameActivity::class.java)
-        finish()
         startActivity(intent)
+        finish()
     }
 
     fun chooseBigGame(v: View) {
-
+        val intent = Intent(this, BigGameActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

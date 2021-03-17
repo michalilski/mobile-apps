@@ -19,6 +19,9 @@
         <activity android:name=".SmallGameActivity"
             android:parentActivityName=".MainActivity">
         </activity>
+        <activity android:name=".BigGameActivity"
+            android:parentActivityName=".MainActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -7,14 +7,14 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
-open class SmallGameActivity : AppCompatActivity(), View.OnClickListener {
+open class BigGameActivity : AppCompatActivity(), View.OnClickListener {
 
-    private val gameSize = 3
+    private val gameSize = 5
     private val game = GameLogic(gameSize)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_small_game)
+        setContentView(R.layout.activity_big_game)
         setupButtons()
         game.setupGame()
     }
