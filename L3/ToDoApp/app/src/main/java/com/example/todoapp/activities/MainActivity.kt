@@ -15,6 +15,13 @@ import com.example.todoapp.Config
 
 class MainActivity : AppCompatActivity() {
 
+/*
+TODO:
+- icons
+- task date
+- improve type/priority list interface
+*/
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerAdapter: RecyclerAdapter
 
@@ -29,10 +36,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerAdapter = RecyclerAdapter(arrayListOf())
         recyclerView.adapter = recyclerAdapter
-        recyclerAdapter.onItemClick = {
-            //TODO show info
-            Toast.makeText(this, "Title: ${it.title}", Toast.LENGTH_SHORT).show()
-        }
+        recyclerAdapter.setActivity(this)
     }
 
     fun addTask(v: View) {
