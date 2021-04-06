@@ -14,7 +14,7 @@
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_margin="10dp"
         android:layout_weight="1"
         android:gravity="center"
@@ -25,9 +25,9 @@
     <LinearLayout
         android:id="@+id/sortingBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_margin="10dp"
-        android:layout_weight="0.1"
+        android:layout_weight="0.5"
         android:orientation="horizontal">
 
         <View
@@ -35,52 +35,92 @@
             android:layout_height="0dp"
             android:layout_weight="7" />
 
+        <TextView
+            android:id="@+id/dateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"
+            android:gravity="center"
+            android:text="@string/date_label" />
+
+        <ImageButton
+            android:id="@+id/sortDateButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"
+            android:adjustViewBounds="true"
+            android:background="#00FFFFFF"
+            android:backgroundTint="#00FFFFFF"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/sort" />
+
+        <TextView
+            android:id="@+id/typeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"
+            android:gravity="center"
+            android:text="type" />
+
+        <ImageButton
+            android:id="@+id/sortTypeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:adjustViewBounds="true"
+            android:background="#00FFFFFF"
+            android:backgroundTint="#00FFFFFF"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/sort" />
+
+        <TextView
+            android:id="@+id/priorityTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="priority" />
+
         <ImageButton
             android:id="@+id/sortPriorityButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.1"
-            app:srcCompat="@android:drawable/arrow_up_float" />
-
-        <TextView
-            android:id="@+id/priorityTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.1"
-            android:text="@string/priority_label" />
-
-        <ImageButton
-            android:id="@+id/sortDateButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.1"
-            app:srcCompat="@android:drawable/arrow_down_float" />
-
-        <TextView
-            android:id="@+id/dateTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.1"
-            android:text="@string/date_label" />
+            android:adjustViewBounds="true"
+            android:background="#00FFFFFF"
+            android:backgroundTint="#00FFFFFF"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/sort" />
 
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerAdapter"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_weight="9">
+        android:layout_height="0dp"
+        android:layout_weight="7.5">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerAdapter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </RelativeLayout>
 
     <ImageButton
         android:id="@+id/addTaskButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_margin="10dp"
-        android:layout_weight="0.1"
+        android:layout_weight="1"
+        android:adjustViewBounds="true"
+        android:background="#00FFFFFF"
         android:onClick="addTask"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/add" />
 
 </LinearLayout>

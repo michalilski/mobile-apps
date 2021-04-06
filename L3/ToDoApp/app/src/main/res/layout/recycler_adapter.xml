@@ -3,16 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:longClickable="true"
     android:layout_margin="10dp"
+    android:longClickable="true"
     android:weightSum="3">
 
     <ImageView
         android:id="@+id/taskIconImageView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_weight="0.5"
+        android:adjustViewBounds="true"
+        android:maxWidth="100dp"
+        android:minHeight="100dp"
         app:srcCompat="@android:drawable/btn_dialog" />
 
     <LinearLayout
@@ -45,12 +48,6 @@
 
         <TextView
             android:id="@+id/taskDateTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
-
-        <TextView
-            android:id="@+id/taskNoteTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView" />

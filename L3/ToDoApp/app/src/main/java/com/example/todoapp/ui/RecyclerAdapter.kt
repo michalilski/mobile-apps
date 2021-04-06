@@ -18,7 +18,7 @@ import com.example.todoapp.activities.MainActivity
 import com.example.todoapp.tasks.Task
 import java.text.SimpleDateFormat
 
-class RecyclerAdapter(private val dataSet: ArrayList<Task>) :
+class RecyclerAdapter(val dataSet: ArrayList<Task>) :
         RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     @SuppressLint("SimpleDateFormat")
@@ -29,7 +29,6 @@ class RecyclerAdapter(private val dataSet: ArrayList<Task>) :
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val taskTitleTextView: TextView = view.findViewById(R.id.taskTitleTextView)
         val taskDateTextView: TextView = view.findViewById(R.id.taskDateTextView)
-        val taskNoteTextView: TextView = view.findViewById(R.id.taskNoteTextView)
         val taskPriorityTextView: TextView = view.findViewById(R.id.taskPriorityTextView)
         val taskIconImageView: ImageView = view.findViewById(R.id.taskIconImageView)
 
@@ -53,10 +52,8 @@ class RecyclerAdapter(private val dataSet: ArrayList<Task>) :
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.taskTitleTextView.text = dataSet[position].title
         viewHolder.taskDateTextView.text = dt.format(dataSet[position].date.time)
-        viewHolder.taskNoteTextView.text = dataSet[position].note
         viewHolder.taskPriorityTextView.text = Utils.priorityMap[dataSet[position].priority]
-//        TODO
-//        viewHolder.taskIconImageView.setImageResource()
+        Utils.typeMap[dataSet[position].type]?.let(viewHolder.taskIconImageView::setImageResource)
     }
 
     override fun getItemCount() = dataSet.size
@@ -70,7 +67,7 @@ class RecyclerAdapter(private val dataSet: ArrayList<Task>) :
         notifyItemInserted(dataSet.size - 1)
     }
 
-    fun deleteTask(taskId: Int) {
+    private fun deleteTask(taskId: Int) {
         dataSet.removeAt(taskId)
         notifyItemRemoved(taskId)
     }
@@ -89,8 +86,7 @@ class RecyclerAdapter(private val dataSet: ArrayList<Task>) :
     fun infoAlert(adapterPosition: Int) {
         val adb = AlertDialog.Builder(activity)
         adb.setTitle(dataSet[adapterPosition].title)
-        //TODO set task icon
-        adb.setIcon(R.drawable.trash_icon)
+        Utils.typeMap[dataSet[adapterPosition].type]?.let { adb.setIcon(it) }
         adb.setMessage("Note:\n" + dataSet[adapterPosition].note)
         adb.setPositiveButton("OK") { _: DialogInterface, _: Int -> }
         adb.show()

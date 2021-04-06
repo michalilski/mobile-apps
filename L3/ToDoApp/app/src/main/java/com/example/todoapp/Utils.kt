@@ -9,10 +9,10 @@ class Utils {
                 1 to Config.MEDIUM_PRIORITY,
                 2 to Config.HIGH_PRIORITY,
         )
-        val typeMap: Map<Type, String> = mapOf(
-                Type.HOME to "Home",
-                Type.GYM to "Gym",
-                Type.WORK to "Work"
+        val typeMap: Map<Type, Int> = mapOf(
+                Type.HOME to R.drawable.home,
+                Type.GYM to R.drawable.gym,
+                Type.WORK to R.drawable.work
         )
     }
 }

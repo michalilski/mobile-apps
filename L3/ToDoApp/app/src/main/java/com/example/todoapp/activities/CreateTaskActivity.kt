@@ -3,23 +3,26 @@ package com.example.todoapp.activities
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.TimePicker
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.todoapp.R
 import com.example.todoapp.tasks.Task
 import com.example.todoapp.tasks.Type
 import java.util.*
 import com.example.todoapp.Config
-import com.example.todoapp.Utils
-import com.example.todoapp.ui.RecyclerAdapter
+
+/*
+    TODO
+        ikonka priorytetu
+        gwiazdki
+ */
 
 class CreateTaskActivity : AppCompatActivity() {
 
     private var currentType = Type.HOME
-    private var currentPriority = 0
+    private var currentPriority = 2
+    private var calendar : Calendar = Calendar.getInstance()
+    private lateinit var timePicker : TimePicker
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,38 +37,47 @@ class CreateTaskActivity : AppCompatActivity() {
     }
 
     private fun setupForm(){
-        val typeList = findViewById<LinearLayout>(R.id.typeList)
-        Utils.typeMap.forEach{
-            val textView = TextView(this)
-            textView.text = it.value
-            textView.setOnClickListener {_ ->
-                Toast.makeText(this, textView.text, Toast.LENGTH_SHORT).show()
-                currentType = it.key
+
+        val taskTypeRadioButtonGroup = findViewById<RadioGroup>(R.id.taskTypeRadioGroup)
+        taskTypeRadioButtonGroup.check(R.id.homeTaskTypeRadioButton)
+        taskTypeRadioButtonGroup.setOnCheckedChangeListener { group, checkedId ->
+            when (checkedId) {
+                R.id.homeTaskTypeRadioButton ->
+                    currentType = Type.HOME
+                R.id.gymTaskTypeRadioButton ->
+                    currentType = Type.GYM
+                R.id.workTaskTypeRadioButton ->
+                    currentType = Type.WORK
             }
-            typeList.addView(textView)
         }
 
-        val priorityList = findViewById<LinearLayout>(R.id.priorityList)
-        Utils.priorityMap.forEach{
-            val textView = TextView(this)
-            textView.text = it.value
-            textView.setOnClickListener {_ ->
-                Toast.makeText(this, textView.text, Toast.LENGTH_SHORT).show()
-                currentPriority = it.key
+        val taskPriorityRadioButtonGroup = findViewById<RadioGroup>(R.id.taskPriorityRadioGroup)
+        taskPriorityRadioButtonGroup.check(R.id.highPriorityRadioButton)
+        taskPriorityRadioButtonGroup.setOnCheckedChangeListener { group, checkedId ->
+            when (checkedId) {
+                R.id.highPriorityRadioButton ->
+                    currentPriority = 2
+                R.id.mediumPriorityRadioButton ->
+                    currentPriority = 1
+                R.id.lowPriorityRadioButton ->
+                    currentPriority = 0
             }
-            priorityList.addView(textView)
         }
 
-        val timePicker = findViewById<TimePicker>(R.id.timePicker)
+
+        timePicker = findViewById(R.id.timePicker)
         timePicker.setIs24HourView(true)
+
+        val calendarView = findViewById<CalendarView>(R.id.calendarView)
+        calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
+            calendar.set(year, month, dayOfMonth)
+            calendarView.date = calendar.timeInMillis
+        }
     }
 
     fun createTaskAndExit(v: View){
-
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.YEAR, 2021)
-        calendar.set(Calendar.MONTH, 3)
-        calendar.set(Calendar.DAY_OF_MONTH, 6)
+        calendar.set(Calendar.HOUR_OF_DAY, timePicker.hour)
+        calendar.set(Calendar.MINUTE, timePicker.minute)
 
         val task = Task(getTaskTitle(),
                 currentType,
