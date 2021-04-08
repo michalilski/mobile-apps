@@ -7,16 +7,17 @@ import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.todoapp.Config
 import com.example.todoapp.R
 import com.example.todoapp.tasks.Task
-import com.example.todoapp.ui.RecyclerAdapter
-import com.example.todoapp.Config
 import com.example.todoapp.tasks.Type
+import com.example.todoapp.ui.RecyclerAdapter
+import java.io.Serializable
 
 
 /*
     TODO
-        gwiazdki
+        sortowanie po obrocie zasłania
 */
 
 class MainActivity : AppCompatActivity() {
@@ -29,7 +30,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setupRecycler()
+        setupRecycler(arrayListOf())
+        setupActivity()
     }
 
     override fun onResume() {
@@ -42,13 +44,22 @@ class MainActivity : AppCompatActivity() {
         recyclerAdapter.updateRecords()
     }
 
-    private fun setupRecycler() {
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putSerializable("tasksDataSet", recyclerAdapter.dataSet as Serializable)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        setupRecycler(savedInstanceState.getSerializable("tasksDataSet") as ArrayList<Task>)
+    }
+
+    private fun setupRecycler(data: ArrayList<Task>) {
         recyclerView = findViewById(R.id.recyclerAdapter)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerAdapter = RecyclerAdapter(arrayListOf())
+        recyclerAdapter = RecyclerAdapter(data)
         recyclerView.adapter = recyclerAdapter
         recyclerAdapter.setActivity(this)
-        setupActivity()
     }
 
     private fun setupActivity() {

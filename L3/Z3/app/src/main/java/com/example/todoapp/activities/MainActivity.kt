@@ -7,17 +7,14 @@ import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.todoapp.R
-import com.example.todoapp.tasks.Task
-import com.example.todoapp.ui.RecyclerAdapter
 import com.example.todoapp.Config
+import com.example.todoapp.R
+import com.example.todoapp.db.DatabaseConfig
+import com.example.todoapp.db.TaskDao
+import com.example.todoapp.tasks.Task
 import com.example.todoapp.tasks.Type
+import com.example.todoapp.ui.RecyclerAdapter
 
-
-/*
-    TODO
-        gwiazdki
-*/
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,11 +22,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerAdapter: RecyclerAdapter
     private var timeSortWay = 1
     private var prioritySortWay = 1
+    private val dataBaseConfig = DatabaseConfig()
+    private lateinit var taskDao : TaskDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setupRecycler()
+        val dataSet = prepareAndReadFromDatabase()
+        setupRecycler(dataSet as ArrayList<Task>)
+        setupActivity()
     }
 
     override fun onResume() {
@@ -42,13 +43,28 @@ class MainActivity : AppCompatActivity() {
         recyclerAdapter.updateRecords()
     }
 
-    private fun setupRecycler() {
+    override fun onStop() {
+        super.onStop()
+        updateDatabse(recyclerAdapter.dataSet)
+
+    }
+
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        outState.putSerializable("tasksDataSet", recyclerAdapter.dataSet as Serializable)
+//        super.onSaveInstanceState(outState)
+//    }
+//
+//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+//        super.onRestoreInstanceState(savedInstanceState)
+//        setupRecycler(savedInstanceState.getSerializable("tasksDataSet") as ArrayList<Task>)
+//    }
+
+    private fun setupRecycler(data: ArrayList<Task>) {
         recyclerView = findViewById(R.id.recyclerAdapter)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerAdapter = RecyclerAdapter(arrayListOf())
+        recyclerAdapter = RecyclerAdapter(data)
         recyclerView.adapter = recyclerAdapter
         recyclerAdapter.setActivity(this)
-        setupActivity()
     }
 
     private fun setupActivity() {
@@ -119,5 +135,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
         recyclerAdapter.notifyDataSetChanged()
+    }
+
+    private fun prepareAndReadFromDatabase() : List<Task>{
+        dataBaseConfig.build(this)
+        taskDao = dataBaseConfig.db.taskDao()
+        return taskDao.getAll()
+    }
+
+    private fun updateDatabse(data : ArrayList<Task>) {
+        taskDao.nuke()
+        taskDao.insertAll(data)
     }
 }

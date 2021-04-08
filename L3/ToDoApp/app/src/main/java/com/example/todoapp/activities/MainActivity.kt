@@ -14,6 +14,7 @@ import com.example.todoapp.tasks.Type
 import com.example.todoapp.ui.RecyclerAdapter
 import java.io.Serializable
 
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
@@ -38,15 +39,15 @@ class MainActivity : AppCompatActivity() {
         recyclerAdapter.updateRecords()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putSerializable("tasksDataSet", recyclerAdapter.dataSet as Serializable)
-        super.onSaveInstanceState(outState)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        setupRecycler(savedInstanceState.getSerializable("tasksDataSet") as ArrayList<Task>)
-    }
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        outState.putSerializable("tasksDataSet", recyclerAdapter.dataSet as Serializable)
+//        super.onSaveInstanceState(outState)
+//    }
+//
+//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+//        super.onRestoreInstanceState(savedInstanceState)
+//        setupRecycler(savedInstanceState.getSerializable("tasksDataSet") as ArrayList<Task>)
+//    }
 
     private fun setupRecycler(data: ArrayList<Task>) {
         recyclerView = findViewById(R.id.recyclerAdapter)

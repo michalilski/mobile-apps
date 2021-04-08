@@ -18,7 +18,6 @@ import java.io.Serializable
 /*
     TODO
         sortowanie po obrocie zasłania
-        gwiazdki
 */
 
 class MainActivity : AppCompatActivity() {
