@@ -8,7 +8,6 @@ import java.util.*
 
 @Entity
 class Task(
-    @PrimaryKey val uid: Int,
     @ColumnInfo val title: String,
     @ColumnInfo val type: Type,
     @ColumnInfo val priority: Int,
@@ -17,4 +16,6 @@ class Task(
     @ColumnInfo var passed: Boolean = false,
     @ColumnInfo var today: Boolean = false
 
-) : Serializable
+) : Serializable{
+    @PrimaryKey(autoGenerate = true) var uid : Int = 0
+}

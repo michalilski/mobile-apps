@@ -11,7 +11,7 @@ class DatabaseConfig {
             appContext,
             AppDatabase::class.java,
             "tasks-db"
-        ).build()
+        ).allowMainThreadQueries().build()
     }
 
 }

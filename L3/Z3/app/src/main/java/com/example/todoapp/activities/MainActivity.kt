@@ -14,6 +14,8 @@ import com.example.todoapp.db.TaskDao
 import com.example.todoapp.tasks.Task
 import com.example.todoapp.tasks.Type
 import com.example.todoapp.ui.RecyclerAdapter
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
@@ -28,7 +30,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val dataSet = prepareAndReadFromDatabase()
+        var dataSet = emptyList<Task>()
+        lifecycleScope.launch {
+            dataSet = prepareAndReadFromDatabase()
+        }
         setupRecycler(dataSet as ArrayList<Task>)
         setupActivity()
     }
@@ -45,8 +50,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        updateDatabse(recyclerAdapter.dataSet)
-
+        lifecycleScope.launch  {
+            updateDatabase(recyclerAdapter.dataSet)
+        }
     }
 
 //    override fun onSaveInstanceState(outState: Bundle) {
@@ -137,13 +143,13 @@ class MainActivity : AppCompatActivity() {
         recyclerAdapter.notifyDataSetChanged()
     }
 
-    private fun prepareAndReadFromDatabase() : List<Task>{
+    private suspend fun prepareAndReadFromDatabase() : List<Task>{
         dataBaseConfig.build(this)
         taskDao = dataBaseConfig.db.taskDao()
         return taskDao.getAll()
     }
 
-    private fun updateDatabse(data : ArrayList<Task>) {
+    private suspend fun updateDatabase(data : ArrayList<Task>) {
         taskDao.nuke()
         taskDao.insertAll(data)
     }
