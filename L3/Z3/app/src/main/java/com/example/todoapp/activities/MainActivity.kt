@@ -48,13 +48,6 @@ class MainActivity : AppCompatActivity() {
         recyclerAdapter.updateRecords()
     }
 
-    override fun onStop() {
-        super.onStop()
-        lifecycleScope.launch  {
-            updateDatabase(recyclerAdapter.dataSet)
-        }
-    }
-
 //    override fun onSaveInstanceState(outState: Bundle) {
 //        outState.putSerializable("tasksDataSet", recyclerAdapter.dataSet as Serializable)
 //        super.onSaveInstanceState(outState)
@@ -70,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerAdapter = RecyclerAdapter(data)
         recyclerView.adapter = recyclerAdapter
-        recyclerAdapter.setActivity(this)
+        recyclerAdapter.setActivity(this, taskDao)
     }
 
     private fun setupActivity() {
@@ -102,7 +95,10 @@ class MainActivity : AppCompatActivity() {
         when (requestCode) {
             Config.ADD_TASK_ACTIVITY_CODE -> {
                 if (resultCode == RESULT_OK) {
-                    recyclerAdapter.addTask(data?.getSerializableExtra(Config.TASK_BUNDLE_ID) as Task)
+                    val task = data?.getSerializableExtra(Config.TASK_BUNDLE_ID) as Task
+                    val uid = taskDao.insert(task)
+                    task.uid = uid.toInt()
+                    recyclerAdapter.addTask(task)
                 }
             }
         }
@@ -147,10 +143,5 @@ class MainActivity : AppCompatActivity() {
         dataBaseConfig.build(this)
         taskDao = dataBaseConfig.db.taskDao()
         return taskDao.getAll()
-    }
-
-    private suspend fun updateDatabase(data : ArrayList<Task>) {
-        taskDao.nuke()
-        taskDao.insertAll(data)
     }
 }

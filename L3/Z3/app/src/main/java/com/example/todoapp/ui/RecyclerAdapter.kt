@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.Config
 import com.example.todoapp.R
 import com.example.todoapp.Utils
+import com.example.todoapp.db.TaskDao
 import com.example.todoapp.tasks.Task
 import java.text.SimpleDateFormat
 
@@ -24,6 +25,7 @@ class RecyclerAdapter(val dataSet: ArrayList<Task>) :
     @SuppressLint("SimpleDateFormat")
     private val dt = SimpleDateFormat(Config.DATE_FORMAT)
     private lateinit var activity: Activity
+    private lateinit var taskDao: TaskDao
 
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -64,8 +66,9 @@ class RecyclerAdapter(val dataSet: ArrayList<Task>) :
 
     override fun getItemCount() = dataSet.size
 
-    fun setActivity(activity: Activity) {
+    fun setActivity(activity: Activity, taskDao: TaskDao) {
         this.activity = activity
+        this.taskDao = taskDao
     }
 
     fun addTask(task: Task) {
@@ -84,6 +87,7 @@ class RecyclerAdapter(val dataSet: ArrayList<Task>) :
     }
 
     private fun deleteTask(taskId: Int) {
+        taskDao.delete(dataSet[taskId].uid)
         dataSet.removeAt(taskId)
         notifyItemRemoved(taskId)
     }

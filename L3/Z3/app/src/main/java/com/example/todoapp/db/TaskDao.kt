@@ -14,6 +14,12 @@ interface TaskDao {
     @Insert
     fun insertAll(tasks: ArrayList<Task>)
 
+    @Insert
+    fun insert(task : Task) : Long
+
+    @Query("DELETE FROM task WHERE uid = :taskId")
+    fun delete(taskId : Int)
+
     @Query("DELETE FROM task")
     fun nuke()
 }
