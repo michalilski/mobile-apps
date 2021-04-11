@@ -14,5 +14,17 @@ class Utils {
                 Type.GYM to R.drawable.gym,
                 Type.WORK to R.drawable.work
         )
+//      database
+        val toType: Map<Int, Type> = mapOf(
+                0 to Type.HOME,
+                1 to Type.GYM,
+                2 to Type.WORK,
+        )
+
+        val fromType: Map<Type, Int> = mapOf(
+                Type.HOME to 0,
+                Type.GYM to 1,
+                Type.WORK to 2,
+        )
     }
 }

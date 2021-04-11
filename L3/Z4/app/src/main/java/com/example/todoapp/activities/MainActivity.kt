@@ -5,33 +5,43 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.Config
 import com.example.todoapp.R
+import com.example.todoapp.db.DatabaseConfig
+import com.example.todoapp.db.TaskDao
+import com.example.todoapp.notification.NotificationHandler
+import com.example.todoapp.notification.TaskNotificationService
 import com.example.todoapp.tasks.Task
 import com.example.todoapp.tasks.Type
 import com.example.todoapp.ui.RecyclerAdapter
-import java.io.Serializable
+import kotlinx.coroutines.launch
 
-
-/*
-    TODO
-        sortowanie po obrocie zasłania
-*/
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var recyclerAdapter: RecyclerAdapter
     private var timeSortWay = 1
     private var prioritySortWay = 1
+    private val dataBaseConfig = DatabaseConfig()
+    private var dataSet = emptyList<Task>()
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerAdapter: RecyclerAdapter
+    private lateinit var taskDao: TaskDao
+    private lateinit var notificationHandler: NotificationHandler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setupRecycler(arrayListOf())
+        lifecycleScope.launch {
+            dataSet = prepareAndReadFromDatabase()
+        }
+        setupRecycler(dataSet as ArrayList<Task>)
         setupActivity()
+        notificationHandler = NotificationHandler(this)
+        notificationHandler.createChannel()
+        stopService(Intent(this, TaskNotificationService::class.java))
     }
 
     override fun onResume() {
@@ -44,22 +54,29 @@ class MainActivity : AppCompatActivity() {
         recyclerAdapter.updateRecords()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putSerializable("tasksDataSet", recyclerAdapter.dataSet as Serializable)
-        super.onSaveInstanceState(outState)
+    override fun onStop() {
+        val intent = Intent(this, TaskNotificationService::class.java)
+        intent.putExtra("dataSet", dataSet as ArrayList<Task>)
+        startService(intent)
+        super.onStop()
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        setupRecycler(savedInstanceState.getSerializable("tasksDataSet") as ArrayList<Task>)
-    }
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        outState.putSerializable("tasksDataSet", recyclerAdapter.dataSet as Serializable)
+//        super.onSaveInstanceState(outState)
+//    }
+//
+//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+//        super.onRestoreInstanceState(savedInstanceState)
+//        setupRecycler(savedInstanceState.getSerializable("tasksDataSet") as ArrayList<Task>)
+//    }
 
     private fun setupRecycler(data: ArrayList<Task>) {
         recyclerView = findViewById(R.id.recyclerAdapter)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerAdapter = RecyclerAdapter(data)
         recyclerView.adapter = recyclerAdapter
-        recyclerAdapter.setActivity(this)
+        recyclerAdapter.setActivity(this, taskDao)
     }
 
     private fun setupActivity() {
@@ -91,7 +108,11 @@ class MainActivity : AppCompatActivity() {
         when (requestCode) {
             Config.ADD_TASK_ACTIVITY_CODE -> {
                 if (resultCode == RESULT_OK) {
-                    recyclerAdapter.addTask(data?.getSerializableExtra(Config.TASK_BUNDLE_ID) as Task)
+                    val task = data?.getSerializableExtra(Config.TASK_BUNDLE_ID) as Task
+                    val uid = taskDao.insert(task)
+                    task.uid = uid.toInt()
+                    recyclerAdapter.addTask(task)
+//                    notificationHandler.showNotification(task)
                 }
             }
         }
@@ -130,5 +151,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
         recyclerAdapter.notifyDataSetChanged()
+    }
+
+    private suspend fun prepareAndReadFromDatabase(): List<Task> {
+        dataBaseConfig.build(this)
+        taskDao = dataBaseConfig.db.taskDao()
+        return taskDao.getAll()
     }
 }

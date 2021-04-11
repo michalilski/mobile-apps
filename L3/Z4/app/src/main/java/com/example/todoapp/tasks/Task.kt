@@ -1,14 +1,21 @@
 package com.example.todoapp.tasks
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.io.Serializable
 import java.util.*
 
-class Task(val title: String,
-           val type: Type,
-           val priority: Int,
-           val date: Calendar,
-           val note: String,
-           var passed: Boolean = false,
-           var today: Boolean = false
+@Entity
+class Task(
+    @ColumnInfo val title: String,
+    @ColumnInfo val type: Type,
+    @ColumnInfo val priority: Int,
+    @ColumnInfo val date: Calendar,
+    @ColumnInfo val note: String,
+    @ColumnInfo var passed: Boolean = false,
+    @ColumnInfo var today: Boolean = false
 
-) : Serializable
+) : Serializable{
+    @PrimaryKey(autoGenerate = true) var uid : Int = 0
+}

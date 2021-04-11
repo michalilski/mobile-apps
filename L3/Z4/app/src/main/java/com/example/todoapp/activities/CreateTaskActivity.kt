@@ -73,7 +73,8 @@ class CreateTaskActivity : AppCompatActivity() {
         calendar.set(Calendar.HOUR_OF_DAY, timePicker.hour)
         calendar.set(Calendar.MINUTE, timePicker.minute)
 
-        val task = Task(getTaskTitle(),
+        val task = Task(
+                getTaskTitle(),
                 currentType,
                 currentPriority,
                 calendar,
