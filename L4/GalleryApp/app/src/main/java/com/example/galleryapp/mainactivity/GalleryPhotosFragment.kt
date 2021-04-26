@@ -26,10 +26,10 @@ class GalleryPhotosFragment : Fragment(R.layout.gallery_photos_fragment) {
     }
 
     private fun setup() {
-        retainInstance = true
+//        retainInstance = true
         galleryRecyclerView = this.mView.findViewById(R.id.galleryPhotosRecyclerView)
         galleryAdapter = GalleryAdapter(this.context!!)
-        galleryRecyclerView.layoutManager = GridLayoutManager(view?.context, 2)
+        galleryRecyclerView.layoutManager = GridLayoutManager(view?.context, 3)
         galleryRecyclerView.adapter = galleryAdapter
     }
 

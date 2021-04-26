@@ -14,6 +14,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.galleryapp.R
+import com.example.galleryapp.Utils
 import com.example.galleryapp.gallery.GalleryController.Companion.dataSet
 import com.example.galleryapp.imageactivity.ImageActivity
 
@@ -36,7 +37,7 @@ class GalleryAdapter(private val context : Context) :
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.imageView.setImageBitmap(dataSet[position].content)
+        viewHolder.imageView.setImageBitmap(Utils.loadThumbnailContent(dataSet[position]))
         viewHolder.imageView.setOnClickListener {
             val intent = Intent(context, ImageActivity::class.java)
             intent.putExtra("imageId", position)

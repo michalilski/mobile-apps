@@ -12,8 +12,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.example.galleryapp.R.layout
+import com.example.galleryapp.Utils
 import com.example.galleryapp.gallery.GalleryController
-import com.example.galleryapp.gallery.GalleryImage
+import com.example.galleryapp.gallery.Thumbnail
 
 class MainActivity : AppCompatActivity() {
     private lateinit var galleryPhotosFragment: GalleryPhotosFragment
@@ -24,12 +25,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val actionBar = supportActionBar
         actionBar?.hide()
+        setContentView(layout.activity_main)
 
-        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            setContentView(layout.activity_main)
-        } else {
-            setContentView(layout.activity_main_landscape)
-        }
+//        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+//            setContentView(layout.activity_main)
+//        } else {
+//            setContentView(layout.activity_main_landscape)
+//        }
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
     }
 
@@ -56,10 +58,10 @@ class MainActivity : AppCompatActivity() {
             dispatchTakePictureIntent()
         }
 
-        if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
-            galleryToolbarFragment.layout.orientation = LinearLayout.HORIZONTAL
-        else
-            galleryToolbarFragment.layout.orientation = LinearLayout.VERTICAL
+//        if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
+//            galleryToolbarFragment.layout.orientation = LinearLayout.HORIZONTAL
+//        else
+//            galleryToolbarFragment.layout.orientation = LinearLayout.VERTICAL
 
         val imageId = intent.getIntExtra("imageId", -1)
         val stars = intent.getFloatExtra("stars", -1.0f)
@@ -87,12 +89,13 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as Bitmap
-            val image = GalleryImage(
-                imageBitmap,
-                "Default photo description",
-                2.5f
-            )
-            GalleryController.dataSet.add(image)
+//            val image = Thumbnail(
+//                imageBitmap,
+//                "Default photo description",
+//                2.5f
+//            )
+            val thumbnail = Utils.saveImage(imageBitmap, this)
+            GalleryController.dataSet.add(thumbnail)
             galleryPhotosFragment.sortPhotosDescending()
         }
     }

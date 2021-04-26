@@ -6,6 +6,8 @@ import com.example.galleryapp.gallery.GalleryController
 class GalleryApp : Application() {
     override fun onCreate() {
         super.onCreate()
-        GalleryController.dataSet = Utils.mockDataSet(this)
+//        Utils.clearGallery(this)
+//        Utils.mockDataSet(this)
+        GalleryController.dataSet = Utils.loadThumbnails(this)
     }
 }

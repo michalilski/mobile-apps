@@ -8,6 +8,7 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.galleryapp.R
+import com.example.galleryapp.Utils
 import com.example.galleryapp.gallery.GalleryController
 import com.example.galleryapp.mainactivity.MainActivity
 
@@ -40,7 +41,7 @@ class ImageActivity : AppCompatActivity() {
         if (imageId != -1){
             val image = GalleryController.dataSet[imageId]
             stars = image.stars
-            fullImageView.setImageBitmap(image.content)
+            fullImageView.setImageBitmap(Utils.loadSourceContent(image))
             descriptionTextView.text = image.description
             ratingBar.rating = stars
         }
