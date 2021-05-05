@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "126809033871",
+    "firebase_url": "https://irc-app-ae9b8-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "irc-app-ae9b8",
+    "storage_bucket": "irc-app-ae9b8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:126809033871:android:3daf32d27e2eb4adf8b4fa",
+        "android_client_info": {
+          "package_name": "com.example.irc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "126809033871-181tqbe68qi8j3s3gnidj4sn4a833ps4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBX-uKdOqFLbJTMkicZPBoBa9jOgAlC3nI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "126809033871-181tqbe68qi8j3s3gnidj4sn4a833ps4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
