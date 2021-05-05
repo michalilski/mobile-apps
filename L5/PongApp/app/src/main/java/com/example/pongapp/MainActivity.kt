@@ -6,23 +6,28 @@ import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pongapp.gameshistory.CustomAdapter
+import com.example.pongapp.gameshistory.db.DbController
 import com.example.pongapp.pong.GameRecord
 import com.example.pongapp.pong.PongActivity
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 
 //TODO
 //zapisywanie gry
 class MainActivity : AppCompatActivity() {
     private lateinit var customAdapter : CustomAdapter
-    private val games = ArrayList<GameRecord>()
+    private var games = ArrayList<GameRecord>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportActionBar?.hide()
+        DbController.setupDb(this)
         setup()
     }
 
@@ -40,9 +45,12 @@ class MainActivity : AppCompatActivity() {
                 "Game finished with score ${lastGame.scorePlayerOne} - ${lastGame.scorePlayerTwo}. " +
                         "Player${winner} Won!", Toast.LENGTH_LONG
             ).show()
-            games.add(lastGame)
-            customAdapter.notifyDataSetChanged()
+            val id = insertGame(lastGame)
+            lastGame.uid = id
         }
+        games = loadGames()
+        customAdapter.dataSet = games
+        customAdapter.notifyDataSetChanged()
     }
 
     private fun setup() {
@@ -56,5 +64,21 @@ class MainActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.gameHistoryRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = customAdapter
+    }
+
+    private fun insertGame(lastGame : GameRecord) : Long{
+        var id = -2L
+        runBlocking{
+            id = DbController.insert(lastGame)
+        }
+        return id
+    }
+
+    private fun loadGames() : ArrayList<GameRecord>{
+        games = ArrayList()
+        runBlocking{
+            games = DbController.loadData()
+        }
+        return games
     }
 }

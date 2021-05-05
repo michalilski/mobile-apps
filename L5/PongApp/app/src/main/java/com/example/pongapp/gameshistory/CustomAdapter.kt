@@ -10,7 +10,7 @@ import com.example.pongapp.R
 import com.example.pongapp.pong.GameRecord
 import java.text.SimpleDateFormat
 
-class CustomAdapter(private val dataSet: ArrayList<GameRecord>) :
+class CustomAdapter(var dataSet: ArrayList<GameRecord>) :
     RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
